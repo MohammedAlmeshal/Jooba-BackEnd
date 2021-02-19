@@ -1,4 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { ignoreQuestion, answerToQuestion } from "../actions";
+
 import {
   Avatar,
   Text,
@@ -6,10 +9,12 @@ import {
   Box,
   Divider,
   Button,
-  ButtonGroup, 
+  ButtonGroup,
+  Input,
 } from "@chakra-ui/react";
 
-const Card = ({ question, answer }) => {
+const Card = ({ question, answer, id, ignoreQuestion, answerToQuestion }) => {
+  const [newAnswer, setNewAnswer] = useState("");
   const answerRender = (
     <Box p="1rem">
       <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
@@ -22,15 +27,23 @@ const Card = ({ question, answer }) => {
 
   const answerActions = (
     <ButtonGroup width={"50%"} isAttached={true}>
-      <Button isFullWidth={"ture"} colorScheme="blue">
+      <Button
+        onClick={() => answerToQuestion(newAnswer, id)}
+        isFullWidth={"ture"}
+        colorScheme="blue"
+      >
         Reply
       </Button>
-      <Button isFullWidth={"ture"}>Ignore</Button>
+      <Input onChange={(e) => setNewAnswer(e.target.value)} />
+
+      <Button isFullWidth={"ture"} onClick={() => ignoreQuestion(id)}>
+        Ignore
+      </Button>
     </ButtonGroup>
   );
 
   return (
-    <Box border="1px" borderColor="gray.200" m="1rem">
+    <Box border="1px" borderColor="gray.200" m="1rem" w="70%">
       <Box p="1rem">
         <Heading as="h4" size="sm" color="darkRed" d="inline" mr="1rem">
           Anon
@@ -43,4 +56,4 @@ const Card = ({ question, answer }) => {
   );
 };
 
-export default Card;
+export default connect(null, { ignoreQuestion, answerToQuestion })(Card);

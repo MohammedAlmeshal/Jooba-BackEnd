@@ -15,7 +15,7 @@ router.get("/", (req, res) => {
 
 // @route POST api/posts
 // @desc Create a post "Ask a question"
-// accsess Public
+// @accsess Public
 router.post("/", (req, res) => {
   const newPost = new Post({
     question: {
@@ -26,7 +26,7 @@ router.post("/", (req, res) => {
 });
 // @route POST api/posts/:id
 // @desc Answer a post "Answer a question"
-// accsess Public
+// @accsess Public
 router.post("/:id", (req, res) => {
   const update = {
     answer: {
@@ -35,7 +35,8 @@ router.post("/:id", (req, res) => {
   };
   Post.findOneAndUpdate(
     { _id: req.params.id, answer: { $exists: false } },
-    update
+    update,
+    { new: true }
   )
     .then((post) => res.json(post))
     .catch((err) => res.status(404).json({ msg: err }));
@@ -43,7 +44,7 @@ router.post("/:id", (req, res) => {
 
 // @route DELETE api/posts
 // @desc DELETE a post "a question"
-// accsess Private
+// @accsess Private
 router.delete("/:id", (req, res) => {
   Post.findById(req.params.id)
     .then((post) => post.remove().then(() => res.json({ success: true })))

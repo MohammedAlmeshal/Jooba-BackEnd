@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
+import { getPosts, askQuestion } from "../actions";
 import {
   Container,
   Button,
@@ -11,46 +13,30 @@ import {
 } from "@chakra-ui/react";
 import Card from "./Card";
 
-const Home = () => {
+const Home = (props) => {
   const [view, setView] = useState("answered");
-  const posts = [
-    {
-      question: {
-        questionTxt: "Esse aliqua anim do sunt magna consectetur.",
-      },
-      answer: {
-        answerTxt: "Esse aliqua anim do sunt magna consectetur.",
-      },
-    },
-    {
-      question: {
-        questionTxt: "Esse aliqua anim do sunt magna consectetur.",
-      },
-      answer: {
-        answerTxt: "Esse aliqua anim do sunt magna consectetur.",
-      },
-    },
-    {
-      question: {
-        questionTxt: "Esse aliqua anim do sunt magna consectetur.",
-      },
-      answer: {
-        answerTxt: "Esse aliqua anim do sunt magna consectetur.",
-      },
-    },
-  ];
+  const [question, setQuestion] = useState("");
+  useEffect(() => {
+    props.getPosts();
+  },[]);
+  console.log(props);
 
-  const answered = posts.map((post) => {
-    return (
-      <Card
-        question={post.question.questionTxt}
-        answer={post.answer.answerTxt}
-      ></Card>
-    );
-  });
-
-  const inbox = posts.map((post) => {
-    return <Card question={post.question.questionTxt}></Card>;
+  // push
+  var answered = new Array();
+  var inbox = new Array();
+  props.posts.map((post) => {
+    if (post.answer) {
+      answered.push(
+        <Card
+          question={post.question.questionTxt}
+          answer={post.answer.answerTxt}
+          id={post._id}
+        ></Card>
+      );
+    } else
+      inbox.push(
+        <Card question={post.question.questionTxt} id={post._id}></Card>
+      );
   });
 
   return (
@@ -80,12 +66,15 @@ const Home = () => {
         </ButtonGroup>
         {view === "answered" ? answered : inbox}
         <Flex>
-          <Input />
-          <Button>Ask</Button>
+          <Input onChange={(e) => setQuestion(e.target.value)} />
+          <Button onClick={() => props.askQuestion(question)}>Ask</Button>
         </Flex>
       </Container>
     </div>
   );
 };
 
-export default Home;
+const mapStateToProps = (state) => {
+  return { posts: state.post.posts };
+};
+export default connect(mapStateToProps, { getPosts, askQuestion })(Home);
