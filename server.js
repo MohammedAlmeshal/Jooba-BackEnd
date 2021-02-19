@@ -4,6 +4,8 @@ const path = require("path");
 const config = require("config");
 
 const posts = require("./routes/api/posts");
+const users = require("./routes/api/users");
+const auth = require("./routes/api/auth");
 
 const app = express();
 
@@ -22,6 +24,8 @@ mongoose
 
 // Use routes
 app.use("/api/posts", posts);
+app.use("/api/users", users);
+app.use("/api/auth", auth);
 
 // server static assests in production
 if (process.env.NODE_ENV === "production") {

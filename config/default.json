@@ -1,5 +1,6 @@
 {
-    "mongoURI": "mongodb+srv://Mohammed:123321@cluster0.iuco1.mongodb.net/<cluster0>?retryWrites=true&w=majority"
+    "mongoURI": "mongodb+srv://Mohammed:123321@cluster0.iuco1.mongodb.net/<cluster0>?retryWrites=true&w=majority",
+    "jwtSecret": "CbC19620"
 
   }
     

@@ -3,7 +3,7 @@ const router = express.Router();
 // const auth = require('../../middleware/auth')
 
 // Question model
-const Post = require("../../models/post");
+const Post = require("../../models/Post");
 
 // @route GET api/posts
 // @desc Get All posts "should be get all USER questions"
