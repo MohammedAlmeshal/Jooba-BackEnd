@@ -11,14 +11,14 @@ const User = require("../../models/User");
 // @desc Auth user (login)
 // @access Public
 router.post("/", (req, res) => {
-  const { username,email, password } = req.body;
+  const { username, password } = req.body;
 
   //simple validation
-  if ( (!username && !email) || !password) {
+  if ( !username  || !password) {
     return res.status(400).json({ msg: "missing username or password" });
   }
-  // check if user exist
-  User.findOne({ $or: [{ email }, { username }] }).then((user) => {
+  // check if user exist by username or email
+  User.findOne({ $or: [{ email:username }, { username }] }).then((user) => {
     if (!user) {
       res.status(400).json({ msg: "User does not exsist" });
     }
@@ -37,7 +37,7 @@ router.post("/", (req, res) => {
             token: token,
             user: {
               id: user.id,
-              email: user.email,
+              username: user.username,
             },
           });
         }
@@ -49,7 +49,7 @@ router.post("/", (req, res) => {
 // @route GET api/auth/user
 // @desc Get user data
 // @access Private
-router.get('/',auth,(req,res) => {
+router.get('/user',auth,(req,res) => {
     User.findById(req.user.id)
     .select('-password')
     .then(user => res.json(user))

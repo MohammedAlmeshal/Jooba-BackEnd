@@ -3,7 +3,6 @@ import axios from "axios";
 
 export const getPosts = () => (dispatch) => {
   //  dispatch(setItemsLoading());
-
   axios
     .get("/api/posts")
     .then((res) => {

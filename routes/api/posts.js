@@ -4,6 +4,8 @@ const router = express.Router();
 
 // Question model
 const Post = require("../../models/Post");
+// User model
+const User = require("../../models/User");
 
 // @route GET api/posts
 // @desc Get All posts "should be get all USER questions"
@@ -17,12 +19,17 @@ router.get("/", (req, res) => {
 // @desc Create a post "Ask a question"
 // @accsess Public
 router.post("/", (req, res) => {
-  const newPost = new Post({
-    question: {
-      questionTxt: req.body.question,
-    },
-  });
-  newPost.save().then((post) => res.json(post));
+  User.findById(req.body.id)
+    .then((user) => {
+      const newPost = new Post({
+        question: {
+          questionTxt: req.body.question,
+        },
+      });
+      
+      newPost.save().then((post) => res.json(post));
+    })
+    .catch((err) => res.status(404).json({ msg: err }));
 });
 // @route POST api/posts/:id
 // @desc Answer a post "Answer a question"

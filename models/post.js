@@ -22,6 +22,7 @@ const PostSchema = new Schema({
       type: Date,
     },
   },
+
 });
 
 module.exports = Post = mongoose.model("Post", PostSchema);
