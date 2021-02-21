@@ -8,36 +8,51 @@ import {
   Heading,
   Avatar,
   Box,
+  Text,
   Flex,
   Input,
   Center,
 } from "@chakra-ui/react";
 import Card from "../components/Card";
 
-const Home = ({ isAuthenticated, posts, getPosts, askQuestion }) => {
+const Home = ({
+  isAuthenticated,
+  posts,
+  getPosts,
+  askQuestion,
+  match,
+  user,
+  accountInfo,
+}) => {
   const [view, setView] = useState("answered");
   const [question, setQuestion] = useState("");
+  const { username } = match.params;
+  const isOwner = user ? user.username === username : null;
   useEffect(() => {
-    getPosts();
-  }, []);
-
+    getPosts(username);
+  }, [isAuthenticated]);
+console.log(accountInfo)
   // push
   var answered = new Array();
   var inbox = new Array();
-  posts.map((post) => {
-    if (post.answer) {
-      answered.push(
-        <Card
-          question={post.question.questionTxt}
-          answer={post.answer.answerTxt}
-          id={post._id}
-        ></Card>
-      );
-    } else
-      inbox.push(
-        <Card question={post.question.questionTxt} id={post._id}></Card>
-      );
-  });
+  if(posts){
+    posts.map((post) => {
+      if (post.answer) {
+        answered.push(
+          <Card
+            question={post.question.questionTxt}
+            answer={post.answer.answerTxt}
+            id={post._id}
+          ></Card>
+        );
+      } else
+        inbox.push(
+          <Card question={post.question.questionTxt} id={post._id}></Card>
+        );
+    });
+  }
+  
+ 
 
   return (
     <div>
@@ -55,12 +70,18 @@ const Home = ({ isAuthenticated, posts, getPosts, askQuestion }) => {
             name="Dan Abrahmov"
             src="https://bit.ly/dan-abramov"
           />
-          <Heading as="h2" size="xl" d="inline" ml="2rem">
-            Mohammed
-          </Heading>
+          <Box ml="2rem">
+            <Heading as="h2" size="xl" d="inline">
+              {isOwner ? user.name : accountInfo.username}
+            </Heading>
+            <Text>
+              {" "}
+              {isOwner ? `@${user.username}` : `@${accountInfo.username}`}
+            </Text>
+          </Box>
         </Flex>
         <Center w="80%">
-          {isAuthenticated ? (
+          {isAuthenticated && isOwner ? (
             <ButtonGroup width={"100%"} isAttached={true}>
               <Button
                 onClick={() => setView("answered")}
@@ -76,10 +97,12 @@ const Home = ({ isAuthenticated, posts, getPosts, askQuestion }) => {
           ) : null}
         </Center>
 
-        {view === "answered" ? answered : isAuthenticated? inbox: null}
+        {view === "answered" ? answered : isAuthenticated ? inbox : null}
         <Flex>
           <Input onChange={(e) => setQuestion(e.target.value)} />
-          <Button onClick={() => askQuestion(question)}>Ask</Button>
+          <Button onClick={() => askQuestion(question, match.params.username)}>
+            Ask
+          </Button>
         </Flex>
       </Container>
     </div>
@@ -88,8 +111,10 @@ const Home = ({ isAuthenticated, posts, getPosts, askQuestion }) => {
 
 const mapStateToProps = (state) => {
   return {
-    posts: state.post.posts,
+    posts: state.post.posts.posts,
+    accountInfo: state.post.posts,
     isAuthenticated: state.auth.isAuthenticated,
+    user: state.auth.user,
   };
 };
 export default connect(mapStateToProps, { getPosts, askQuestion })(Home);

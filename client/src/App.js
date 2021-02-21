@@ -23,14 +23,12 @@ function App() {
   return (
     <Provider store={store}>
       <div className="App">
-  
-
         <Router history={history}>
-        {isMobile ? <Sidebar /> : <Navbar />}
+          {isMobile ? <Sidebar /> : <Navbar />}
           <Switch>
-            <Route exact path="/" component={Home}></Route>
             <Route exact path="/signup" component={SignUp}></Route>
             <Route exact path="/login" component={Login}></Route>
+            <Route exact path="/:username" component={Home}></Route>
           </Switch>
         </Router>
       </div>

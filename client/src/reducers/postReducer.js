@@ -8,7 +8,7 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case GET_POSTS:
-      return { ...state, posts: action.payload };
+      return { ...state, posts: action.payload,};
     case ASK_QUESTION:
       return { ...state, posts: [action.payload, ...state.posts] };
       case DELETE_POST:

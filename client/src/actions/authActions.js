@@ -12,11 +12,11 @@ import {
 } from "../actions/types";
 
 // check token & load user
-export const loadUser = () => (dispatch, getState) => {
+export const loadUser = () =>  (dispatch, getState) => {
   // User Loading
   dispatch({ type: USER_LOADING });
 
-  axios
+   axios
     .get("/api/auth/user", tokenConfig(getState))
     .then((res) => {
       dispatch({ type: USER_LOADED, payload: res.data });
@@ -28,8 +28,8 @@ export const loadUser = () => (dispatch, getState) => {
 };
 
 // Register User
-export const register = ({ name,username, email, password }) => (dispatch) => {
-    dispatch({ type: USER_LOADING });
+export const register = ({ name, username, email, password }) => (dispatch) => {
+  dispatch({ type: USER_LOADING });
   // Headers
   const config = {
     headers: {
@@ -37,7 +37,7 @@ export const register = ({ name,username, email, password }) => (dispatch) => {
     },
   };
   // Request body
-  const body = JSON.stringify({ name,username, email, password });
+  const body = JSON.stringify({ name, username, email, password });
 
   axios
     .post("/api/users", body, config)

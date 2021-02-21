@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const config = require("config");
 
+const profiles = require("./routes/api/profiles");
 const posts = require("./routes/api/posts");
 const users = require("./routes/api/users");
 const auth = require("./routes/api/auth");
@@ -14,7 +15,7 @@ app.use(express.json());
 // DB config
 const db = config.get("mongoURI");
 
-// Connect to mongo db
+// Connect to mongo db 
 mongoose.set("useUnifiedTopology", true);
 mongoose.set("useFindAndModify", false);
 mongoose
@@ -23,6 +24,7 @@ mongoose
   .catch((err) => console.log(err));
 
 // Use routes
+app.use("/api/profiles", profiles);
 app.use("/api/posts", posts);
 app.use("/api/users", users);
 app.use("/api/auth", auth);

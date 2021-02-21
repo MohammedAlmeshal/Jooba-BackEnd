@@ -1,10 +1,21 @@
 import { GET_POSTS, ASK_QUESTION, DELETE_POST, ANSWER_QUESTION } from "./types";
+import { tokenConfig } from "./authActions";
+import { returnErrors } from "./errorActions";
+
 import axios from "axios";
 
-export const getPosts = () => (dispatch) => {
+export const getPosts = (username) => (dispatch, getState) => {
   //  dispatch(setItemsLoading());
+  // /api/profile/${username}`
+  const { auth } = getState();
+  const endpoint = {};
+
+  if (auth.isAuthenticated && auth.user.username === username) {
+    endpoint.path = "/api/profiles";
+    endpoint.config = tokenConfig(getState);
+  } else endpoint.path = `/api/profiles/${username}`;
   axios
-    .get("/api/posts")
+    .get(endpoint.path, endpoint.config)
     .then((res) => {
       dispatch({ type: GET_POSTS, payload: res.data });
     })
@@ -13,10 +24,10 @@ export const getPosts = () => (dispatch) => {
       // dispatch(returnErrors(err.response.data, err.response.status))
     );
 };
-export const answerToQuestion = (answer, id) => (dispatch) => {
+export const answerToQuestion = (answer, id) => (dispatch, getState) => {
   //  dispatch(setItemsLoading());
   axios
-    .post(`/api/posts/${id}`, { answer })
+    .post(`/api/posts/answer/${id}`, { answer }, tokenConfig(getState))
     .then((res) => {
       dispatch({ type: ANSWER_QUESTION, payload: { post: res.data, id } });
     })
@@ -25,11 +36,11 @@ export const answerToQuestion = (answer, id) => (dispatch) => {
       // dispatch(returnErrors(err.response.data, err.response.status))
     );
 };
-export const ignoreQuestion = (id) => (dispatch) => {
+export const ignoreQuestion = (id) => (dispatch, getState) => {
   //  dispatch(setItemsLoading());
 
   axios
-    .delete(`/api/posts/${id}`)
+    .delete(`/api/posts/${id}`, tokenConfig(getState))
     .then((res) => {
       dispatch({ type: DELETE_POST, payload: id });
     })
@@ -39,10 +50,10 @@ export const ignoreQuestion = (id) => (dispatch) => {
     );
 };
 
-export const askQuestion = (question) => (dispatch) => {
+export const askQuestion = (question, username) => (dispatch) => {
   //  dispatch(setItemsLoading());
   axios
-    .post("/api/posts", { question })
+    .post(`/api/posts/${username}`, { question })
     .then((res) => {
       dispatch({ type: ASK_QUESTION, payload: res.data });
     })

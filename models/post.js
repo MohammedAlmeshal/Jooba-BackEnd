@@ -11,7 +11,7 @@ const PostSchema = new Schema({
     date: {
       type: Date,
       default: Date.now,
-    }, 
+    },
   },
 
   answer: {
@@ -22,7 +22,10 @@ const PostSchema = new Schema({
       type: Date,
     },
   },
-
+  questionTo: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
 });
 
 module.exports = Post = mongoose.model("Post", PostSchema);
