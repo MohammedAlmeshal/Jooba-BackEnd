@@ -3,12 +3,8 @@ const Post = require("../models/Post");
 function isPostOwner(req, res, next) {
   Post.findById(req.params.id)
     .then((post) => {
-      if (post.questionTo.toString() === req.user.id) {
-        next();
-    
-      } else {
-      return res.status(404).json({ msg: 'Permission denied' })
-      }
+      if (!(post.questionTo.toString() === req.user.id))
+        return res.status(404).json({ msg: "Permission denied" });
 
       next();
     })

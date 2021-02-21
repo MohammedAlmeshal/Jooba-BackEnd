@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { login } from "../actions/authActions";
 import { clearErrors } from "../actions/errorActions";
 import {
@@ -17,14 +18,25 @@ import {
   AlertTitle,
   AlertDescription,
 } from "@chakra-ui/react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage,  } from "formik";
 const Login = ({
   login,
   clearErrors,
   isLoading,
   isAuthenticated,
+  toUsername,
   RegisterError,
 }) => {
+  let history = useHistory();
+
+ 
+  useEffect(() => {
+    if (isAuthenticated) {
+      clearErrors();
+      history.push(`/${toUsername}`);
+    }
+  }, [isAuthenticated]);
+
   const validateUsername = (value) => {
     let error;
     if (!value) {
@@ -60,12 +72,13 @@ const Login = ({
               onSubmit={(values, actions) => {
                 const { username, password } = values;
                 login({ username, password });
-                if (isAuthenticated) clearErrors();
               }}
             >
               {(props) => (
                 <Form>
-                  {(RegisterError.status !== null && RegisterError.status != 401)  ? alert : null}
+                  {RegisterError.status !== null && RegisterError.status != 401
+                    ? alert
+                    : null}
 
                   <Field name="username" validate={validateUsername}>
                     {({ field, form }) => (
@@ -127,6 +140,7 @@ const Login = ({
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
   isAuthenticated: state.auth.isAuthenticated,
+  toUsername:state.auth.user.username,
   RegisterError: state.error,
 });
 

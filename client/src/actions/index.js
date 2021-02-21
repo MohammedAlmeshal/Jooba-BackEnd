@@ -1,12 +1,11 @@
-import { GET_POSTS, ASK_QUESTION, DELETE_POST, ANSWER_QUESTION } from "./types";
+import {  ASK_QUESTION, DELETE_POST, ANSWER_QUESTION, GET_PROFILE,PROFILE_LOADING } from "./types";
 import { tokenConfig } from "./authActions";
 import { returnErrors } from "./errorActions";
 
 import axios from "axios";
 
-export const getPosts = (username) => (dispatch, getState) => {
-  //  dispatch(setItemsLoading());
-  // /api/profile/${username}`
+export const getProfile = (username) => (dispatch, getState) => {
+   dispatch(setItemsLoading());
   const { auth } = getState();
   const endpoint = {};
 
@@ -17,7 +16,7 @@ export const getPosts = (username) => (dispatch, getState) => {
   axios
     .get(endpoint.path, endpoint.config)
     .then((res) => {
-      dispatch({ type: GET_POSTS, payload: res.data });
+      dispatch({ type: GET_PROFILE, payload: res.data });
     })
     .catch(
       (err) => console.log(err)
@@ -38,7 +37,6 @@ export const answerToQuestion = (answer, id) => (dispatch, getState) => {
 };
 export const ignoreQuestion = (id) => (dispatch, getState) => {
   //  dispatch(setItemsLoading());
-
   axios
     .delete(`/api/posts/${id}`, tokenConfig(getState))
     .then((res) => {
@@ -61,4 +59,10 @@ export const askQuestion = (question, username) => (dispatch) => {
       (err) => console.log(err)
       // dispatch(returnErrors(err.response.data, err.response.status))
     );
+};
+
+export const setItemsLoading = () => {
+  return {
+    type: PROFILE_LOADING,
+  };
 };

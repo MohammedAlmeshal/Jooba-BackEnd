@@ -13,7 +13,9 @@ import {
     token: localStorage.getItem("token"),
     isAuthenticated: null,
     isLoading: false,
-    user: null,
+    user: {
+      username:''
+    },
   };
   
   export default function (state = initialState, action) {
@@ -47,7 +49,7 @@ import {
         return {
           ...state,
           token: null,
-          user: null,
+          user: '',
           isAuthenticated: false,
           isLoading: false,
         };
