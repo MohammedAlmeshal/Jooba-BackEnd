@@ -10,7 +10,7 @@ const User = require("../../models/User");
 // @route GET api/:id
 // @desc Get some user profile
 router.get("/:username", (req, res) => {
-  User.findOne({ username: req.params.username },{password:false,email:false,_id:false})
+  User.findOne({ username: req.params.username },{password:false,email:false,_id:false}).orFail()
     .populate({
       path: "posts",
       match: { answer: { $exists: true } },
@@ -19,8 +19,7 @@ router.get("/:username", (req, res) => {
     .exec()
     .then((user) => {
       res.json(user);
-    })
-    .catch((err) => res.status(404).json({ msg: err }));
+    }).catch((err) => res.status(404).json({ msg: 'not found' }));
 });
 
 // @route GET api/account

@@ -19,8 +19,7 @@ export const getProfile = (username) => (dispatch, getState) => {
       dispatch({ type: GET_PROFILE, payload: res.data });
     })
     .catch(
-      (err) => console.log(err)
-      // dispatch(returnErrors(err.response.data, err.response.status))
+      (err) => dispatch(returnErrors(err.response.data, err.response.status))
     );
 };
 export const answerToQuestion = (answer, id) => (dispatch, getState) => {

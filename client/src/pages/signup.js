@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { clearErrors } from "../actions/errorActions";
+
 import { register } from "../actions/authActions";
 import {
   Flex,
@@ -17,7 +20,21 @@ import {
   AlertDescription,
 } from "@chakra-ui/react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-const SignUp = ({ register, isLoading, isAuthenticated, RegisterError }) => {
+const SignUp = ({
+  register,
+  isLoading,
+  isAuthenticated,
+  RegisterError,
+  toUsername,
+}) => {
+  let history = useHistory();
+  useEffect(() => {
+    if (isAuthenticated) {
+      clearErrors();
+      history.push(`/${toUsername}`);
+    }
+  }, [isAuthenticated]);
+
   const validateName = (value) => {
     let error;
     if (!value) {
@@ -165,7 +182,8 @@ const SignUp = ({ register, isLoading, isAuthenticated, RegisterError }) => {
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
   isAuthenticated: state.auth.isAuthenticated,
+  toUsername: state.auth.user.username,
   RegisterError: state.error,
 });
 
-export default connect(mapStateToProps, { register })(SignUp);
+export default connect(mapStateToProps, { register, clearErrors })(SignUp);

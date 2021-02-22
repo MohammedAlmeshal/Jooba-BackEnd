@@ -12,6 +12,7 @@ const Home = ({
   user,
   profile,
   isLoading,
+  error,
 }) => {
   const { username } = match.params;
   const isOwner = isAuthenticated && user.username === username ? true : false;
@@ -23,7 +24,9 @@ const Home = ({
 
   return (
     <>
-      {isLoading ? (
+      {error.status === 404 ? (
+        <p>not found</p>
+      ) : isLoading ? (
         <Spinner size="xl" />
       ) : (
         <Profile
@@ -42,6 +45,7 @@ const mapStateToProps = (state) => {
     isAuthenticated: state.auth.isAuthenticated,
     user: state.auth.user,
     isLoading: state.profiles.isLoading,
+    error: state.error,
   };
 };
 export default connect(mapStateToProps, { getProfile, askQuestion })(Home);

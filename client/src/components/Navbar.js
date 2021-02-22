@@ -30,6 +30,6 @@ const Navbar = ({ isAuthenticated, isLoading }) => {
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
-  isLoading: state.profiles.isLoading,
+  isLoading: state.auth.isLoading,
 });
 export default connect(mapStateToProps)(Navbar);
