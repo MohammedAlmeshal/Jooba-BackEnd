@@ -30,8 +30,7 @@ export const answerToQuestion = (answer, id) => (dispatch, getState) => {
       dispatch({ type: ANSWER_QUESTION, payload: { post: res.data, id } });
     })
     .catch(
-      (err) => console.log(err)
-      // dispatch(returnErrors(err.response.data, err.response.status))
+      (err) => dispatch(returnErrors(err.response.data, err.response.status))
     );
 };
 export const ignoreQuestion = (id) => (dispatch, getState) => {
@@ -42,8 +41,7 @@ export const ignoreQuestion = (id) => (dispatch, getState) => {
       dispatch({ type: DELETE_POST, payload: id });
     })
     .catch(
-      (err) => console.log(err)
-      // dispatch(returnErrors(err.response.data, err.response.status))
+      (err) => dispatch(returnErrors(err.response.data, err.response.status))
     );
 };
 
@@ -55,8 +53,7 @@ export const askQuestion = (question, username) => (dispatch) => {
       dispatch({ type: ASK_QUESTION, payload: res.data });
     })
     .catch(
-      (err) => console.log(err)
-      // dispatch(returnErrors(err.response.data, err.response.status))
+      (err) => dispatch(returnErrors(err.response.data, err.response.status))
     );
 };
 
