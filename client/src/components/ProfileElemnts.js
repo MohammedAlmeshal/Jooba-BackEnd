@@ -11,20 +11,20 @@ import {
   Input,
   Center,
 } from "@chakra-ui/react";
-import Card from "../components/Card";
+import Card from "./Card";
 
-const Profile = ({ isOwner, askQuestion, user }) => {
+const ProfileElemnts = ({ isOwner, askQuestion, user }) => {
   const [view, setView] = useState("answered");
   const [question, setQuestion] = useState("");
-  console.log(isOwner)
+ 
 
   // push
   var answered = new Array();
   var inbox = new Array();
-  user.posts.map((post) => {
+  user.posts.map((post, i) => {
     if (post.answer) {
       answered.push(
-        <Card
+        <Card key={i}
           question={post.question.questionTxt}
           answer={post.answer.answerTxt}
           id={post._id}
@@ -32,7 +32,7 @@ const Profile = ({ isOwner, askQuestion, user }) => {
       );
     } else
       inbox.push(
-        <Card question={post.question.questionTxt} id={post._id}></Card>
+        <Card key={i} question={post.question.questionTxt} id={post._id}></Card>
       );
   });
 
@@ -90,4 +90,4 @@ const Profile = ({ isOwner, askQuestion, user }) => {
   );
 };
 
-export default Profile;
+export default ProfileElemnts;

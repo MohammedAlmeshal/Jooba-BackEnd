@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { clearErrors } from "../actions/errorActions";
+import { clearErrors } from "../flux//actions/errorActions";
 
-import { register } from "../actions/authActions";
+import { register } from "../flux//actions/authActions";
 import {
   Flex,
   Box,

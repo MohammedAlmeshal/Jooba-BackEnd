@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Profile from "../components/Profile";
+import ProfileElemnts from "../components/ProfileElemnts";
 import { connect } from "react-redux";
-import { getProfile, askQuestion } from "../actions";
+import { getProfile, askQuestion } from "../flux/actions";
 import { Spinner } from "@chakra-ui/react";
 
-const Home = ({
+const Profile = ({
   isAuthenticated,
   getProfile,
   askQuestion,
@@ -17,7 +17,7 @@ const Home = ({
   const { username } = match.params;
   const isOwner = isAuthenticated && user.username === username ? true : false;
 
-  console.log(isLoading);
+  console.log("render");
   useEffect(() => {
     getProfile(username);
   }, [isAuthenticated]);
@@ -29,11 +29,11 @@ const Home = ({
       ) : isLoading ? (
         <Spinner size="xl" />
       ) : (
-        <Profile
+        <ProfileElemnts
           askQuestion={askQuestion}
           isOwner={isOwner}
           user={profile}
-        ></Profile>
+        ></ProfileElemnts>
       )}
     </>
   );
@@ -48,4 +48,4 @@ const mapStateToProps = (state) => {
     error: state.error,
   };
 };
-export default connect(mapStateToProps, { getProfile, askQuestion })(Home);
+export default connect(mapStateToProps, { getProfile, askQuestion })(Profile);

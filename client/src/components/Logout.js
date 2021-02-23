@@ -1,5 +1,5 @@
 import React from "react";
-import { logout } from "../actions/authActions";
+import { logout } from "../flux//actions/authActions";
 import { connect } from "react-redux";
 import { Box } from "@chakra-ui/react";
 

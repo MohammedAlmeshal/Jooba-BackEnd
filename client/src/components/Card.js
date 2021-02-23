@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { ignoreQuestion, answerToQuestion } from "../actions";
+import { ignoreQuestion, answerToQuestion } from "../flux/actions";
+import AnswerModal from './AnswerModal';
 
 import {
   Avatar,
@@ -14,7 +15,6 @@ import {
 } from "@chakra-ui/react";
 
 const Card = ({ question, answer, id, ignoreQuestion, answerToQuestion }) => {
-  const [newAnswer, setNewAnswer] = useState("");
   const answerRender = (
     <Box p="1rem">
       <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
@@ -26,20 +26,24 @@ const Card = ({ question, answer, id, ignoreQuestion, answerToQuestion }) => {
   );
 
   const answerActions = (
+    <>
     <ButtonGroup width={"50%"} isAttached={true}>
-      <Button
+      {/* <Button
         onClick={() => answerToQuestion(newAnswer, id)}
         isFullWidth={"ture"}
         colorScheme="blue"
       >
         Reply
-      </Button>
-      <Input onChange={(e) => setNewAnswer(e.target.value)} />
+      </Button> */}
 
       <Button isFullWidth={"ture"} onClick={() => ignoreQuestion(id)}>
         Ignore
       </Button>
     </ButtonGroup>
+    <AnswerModal answerToQuestion={answerToQuestion} id={id}  question={question}  />
+
+    </>
+
   );
 
   return (
