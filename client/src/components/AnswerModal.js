@@ -11,6 +11,7 @@ import {
   Input,
   useDisclosure,
 } from "@chakra-ui/react";
+import { ChatIcon } from '@chakra-ui/icons'
 
 const AnswerModal = ({ question, id, answerToQuestion }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -18,7 +19,7 @@ const AnswerModal = ({ question, id, answerToQuestion }) => {
 
   return (
     <>
-      <Button onClick={onOpen}>Answer</Button>
+      <Button variant='ghost'fontSize='14px' onClick={onOpen}> <ChatIcon me='0.5rem' /> Answer</Button>
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

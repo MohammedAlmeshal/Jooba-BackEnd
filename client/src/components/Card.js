@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { ignoreQuestion, answerToQuestion } from "../flux/actions";
-import AnswerModal from './AnswerModal';
+import AnswerModal from "./AnswerModal";
 
 import {
   Avatar,
@@ -10,50 +10,87 @@ import {
   Box,
   Divider,
   Button,
-  ButtonGroup,
-  Input,
+  Flex,
+  useColorMode,
 } from "@chakra-ui/react";
+import { ViewOffIcon } from "@chakra-ui/icons";
 
-const Card = ({ question, answer, id, ignoreQuestion, answerToQuestion }) => {
-  const answerRender = (
+const Card = ({
+  question,
+  answer,
+  id,
+  ignoreQuestion,
+  answerToQuestion,
+  user,
+  isMobile,
+}) => {
+  const { colorMode, toggleColorMode } = useColorMode();
+
+  const answerRender = user ? (
     <Box p="1rem">
-      <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
-      <Heading as="h4" size="sm" d="inline" mr="1rem">
-        Mohammed
-      </Heading>
-      <Text ml="5rem"> {answer}</Text>
+      <Flex align="center">
+        <Avatar
+          size={isMobile ? "sm" : "md"}
+          src="https://bit.ly/broken-link"
+        />
+
+        <Heading as="h4" size="sm" d="inline" ms="0.8rem">
+          Mohammed
+        </Heading>
+      </Flex>
+
+      <Text ms="2rem" mt="1rem" textAlign="start">
+        {answer}
+      </Text>
     </Box>
-  );
+  ) : null;
 
   const answerActions = (
     <>
-    <ButtonGroup width={"50%"} isAttached={true}>
-      {/* <Button
-        onClick={() => answerToQuestion(newAnswer, id)}
-        isFullWidth={"ture"}
-        colorScheme="blue"
-      >
-        Reply
-      </Button> */}
-
-      <Button isFullWidth={"ture"} onClick={() => ignoreQuestion(id)}>
-        Ignore
-      </Button>
-    </ButtonGroup>
-    <AnswerModal answerToQuestion={answerToQuestion} id={id}  question={question}  />
-
+      <Flex justify="space-between">
+        <AnswerModal
+          answerToQuestion={answerToQuestion}
+          id={id}
+          question={question}
+        />
+        <Button
+          variant="ghost"
+          fontSize="14px"
+          onClick={() => ignoreQuestion(id)}
+        >
+          {" "}
+          <ViewOffIcon
+        
+            me="0.5rem"
+          />{" "}
+          Ignore
+        </Button>
+      </Flex>
     </>
-
   );
 
   return (
-    <Box border="1px" borderColor="gray.200" m="1rem" w="70%">
-      <Box p="1rem">
-        <Heading as="h4" size="sm" color="darkRed" d="inline" mr="1rem">
+    <Box
+      border="1px"
+      borderRadius="lg"
+      borderColor={colorMode === "dark" ? "gray.500" : "gray.200"}
+      mt="1rem"
+      w="100%"
+    >
+      <Flex p="1rem" align="baseline">
+        <Heading
+          as="h4"
+          size="sm"
+          color={colorMode === "dark" ? "brand.200" : "brand.100"}
+          d="inline"
+          me="1rem"
+        >
           Anon
         </Heading>
-        <Text d="inline">{question}</Text>
-      </Box>
+        <Text d="inline" wordBreak="break-word">
+          {question}
+        </Text>
+      </Flex>
       <Divider />
       {answer ? answerRender : answerActions}
     </Box>

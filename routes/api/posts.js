@@ -12,6 +12,10 @@ const User = require("../../models/User");
 // @desc Create a post "Ask a question"
 // @accsess Public
 router.post("/:username", (req, res) => {
+  //check for white space
+  if (!req.body.question.replace(/\s/g, '').length) {
+    return res.status(400).json({ msg: 'question only contains whitespace ' })
+  }
   User.findOne({ username: req.params.username })
     .then((user) => {
       const newPost = new Post({

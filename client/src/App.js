@@ -9,13 +9,11 @@ import store from "./store";
 import { loadUser } from "./flux/actions/authActions";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { createBrowserHistory } from "history";
-import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
-import { useMediaQuery } from "@chakra-ui/react";
+import Nav from "./components/Nav";
+
 
 function App() {
   const history = createBrowserHistory();
-  const [isMobile] = useMediaQuery("(max-width: 767px)");
 
   useEffect(() => {
     store.dispatch(loadUser());
@@ -25,7 +23,7 @@ function App() {
     <Provider store={store}>
       <div className="App">
         <Router history={history}>
-          {isMobile ? <Sidebar /> : <Navbar />}
+          <Nav/>
           <Switch>
           <Route exact path="/" component={Home}></Route>
             <Route exact path="/signup" component={SignUp}></Route>
