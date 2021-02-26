@@ -5,6 +5,15 @@ const direction = document.documentElement.lang === "ar" ? "rtl" : "ltr";
 
 const theme = extendTheme({
   direction,
+  styles:{
+    global: props => ({
+      body: {
+        color: mode('gray.800', 'whiteAlpha.900')(props),
+        bg: mode('white', 'gray.800')(props),
+      },
+    }),
+  }
+,
 
 
   colors: {
@@ -15,6 +24,9 @@ const theme = extendTheme({
       300: "#C328AB",
       400: "#2490B2",
     },
+    gray:{
+      800:'#12181c'
+    }
   },
 
   components: {
@@ -54,6 +66,14 @@ const theme = extendTheme({
             color: "white",
           },
         }),
+      },
+    },
+
+    input: {
+      size: {
+        md: {
+          borderRadius: "0",
+        },
       },
     },
   },

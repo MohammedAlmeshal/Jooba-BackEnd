@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { clearErrors } from "../flux//actions/errorActions";
+import LogoLight from "../public/logo.svg";
+import LogoDark from "../public/logoDark.svg";
 
 import { register } from "../flux//actions/authActions";
 import {
@@ -18,6 +20,7 @@ import {
   AlertIcon,
   AlertTitle,
   AlertDescription,
+  useColorMode,
 } from "@chakra-ui/react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 const SignUp = ({
@@ -26,11 +29,22 @@ const SignUp = ({
   isAuthenticated,
   RegisterError,
   toUsername,
+  clearErrors,
 }) => {
   let history = useHistory();
+  const { colorMode, toggleColorMode } = useColorMode();
+  const color = colorMode === "light" ? "brand.600" : "brand.300";
+  const Logo = colorMode === "light" ? LogoLight: LogoDark;
+
+
   useEffect(() => {
+    if (RegisterError.msg.msg) {
+      clearErrors();
+    }
+
     if (isAuthenticated) {
       clearErrors();
+
       history.push(`/${toUsername}`);
     }
   }, [isAuthenticated]);
@@ -72,7 +86,7 @@ const SignUp = ({
     return error;
   };
   const alert = (
-    <Alert status="error">
+    <Alert status="error" mb="1rem"  borderRadius="base">
       <AlertIcon />
       <AlertTitle mr={2}>{RegisterError.msg.msg}</AlertTitle>
     </Alert>
@@ -80,9 +94,9 @@ const SignUp = ({
   return (
     <>
       <Center>
-        <Flex flexDir="column" m="5rem">
-          <Heading size="2xl">Sign up</Heading>
-          <Box m="2rem">
+        <Flex flexDir="column" m="5rem" m="10rem 0 0 0" align="center">
+          <img src={Logo} width="250" />
+          <Box m="2rem" w="20rem">
             <Formik
               initialValues={{
                 name: "",
@@ -97,15 +111,25 @@ const SignUp = ({
             >
               {(props) => (
                 <Form>
-                  {RegisterError.status !== null && RegisterError.status != 401
-                    ? alert
-                    : null}
+                  {RegisterError.status !== null &&
+                  RegisterError.status != 401 ? (
+                    alert
+                  ) : (
+                    <Box h="48px" />
+                  )}
                   <Field name="name" validate={validateName}>
                     {({ field, form }) => (
                       <FormControl
                         isInvalid={form.errors.name && form.touched.name}
+                        mb="1rem"
                       >
-                        <Input {...field} id="name" placeholder="Name" />
+                        <Input
+                          {...field}
+                          id="name"
+                          placeholder="Name"
+                          variant="flushed"
+                          focusBorderColor={color}
+                        />
                         <FormErrorMessage>{form.errors.name}</FormErrorMessage>
                       </FormControl>
                     )}
@@ -114,6 +138,7 @@ const SignUp = ({
                   <Field name="username" validate={validateUsername}>
                     {({ field, form }) => (
                       <FormControl
+                        mt="1rem"
                         isInvalid={
                           form.errors.username && form.touched.username
                         }
@@ -122,6 +147,8 @@ const SignUp = ({
                           {...field}
                           id="username"
                           placeholder="Username"
+                          variant="flushed"
+                          focusBorderColor={color}
                         />
                         <FormErrorMessage>
                           {form.errors.username}
@@ -133,9 +160,16 @@ const SignUp = ({
                   <Field name="email" validate={validateEmail}>
                     {({ field, form }) => (
                       <FormControl
+                        mt="1rem"
                         isInvalid={form.errors.email && form.touched.email}
                       >
-                        <Input {...field} id="email" placeholder="Email" />
+                        <Input
+                          {...field}
+                          id="email"
+                          placeholder="Email"
+                          variant="flushed"
+                          focusBorderColor={color}
+                        />
                         <FormErrorMessage>{form.errors.email}</FormErrorMessage>
                       </FormControl>
                     )}
@@ -144,6 +178,7 @@ const SignUp = ({
                   <Field name="password" validate={validatePassword}>
                     {({ field, form }) => (
                       <FormControl
+                        mt="1rem"
                         isInvalid={
                           form.errors.password && form.touched.password
                         }
@@ -153,6 +188,8 @@ const SignUp = ({
                           id="password"
                           type="password"
                           placeholder="Password"
+                          variant="flushed"
+                          focusBorderColor={color}
                         />
                         <FormErrorMessage>
                           {form.errors.password}
@@ -162,12 +199,13 @@ const SignUp = ({
                   </Field>
 
                   <Button
-                    mt={4}
-                    colorScheme="teal"
+                    mt="2rem"
+                    w="20rem"
                     isLoading={isLoading}
                     type="submit"
+                    _hover={{ bg: color, color: "white" }}
                   >
-                    Submit
+                    Sign up
                   </Button>
                 </Form>
               )}

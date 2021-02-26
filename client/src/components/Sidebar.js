@@ -1,6 +1,7 @@
 import React from "react";
-import { Flex, Box, Center } from "@chakra-ui/react";
+import { Flex, Box, Center, Button } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
+import Logout from "./Logout";
 import {
   Drawer,
   DrawerBody,
@@ -12,11 +13,19 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 
-const Sidebar = ({ links, langButton, color }) => {
+const Sidebar = ({
+  links,
+  home,
+  langButton,
+  color,
+  isAuthenticated,
+
+  userInfo,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = React.useRef();
   return (
-    <Center  h="45px">
+    <Center h="45px">
       <Flex justify="flex-start" width="90%">
         <HamburgerIcon color={color} onClick={onOpen} />
       </Flex>
@@ -26,21 +35,27 @@ const Sidebar = ({ links, langButton, color }) => {
         onClose={onClose}
         finalFocusRef={btnRef}
         placement="left"
+        onOverlayClick={onClose}
       >
         <DrawerOverlay>
           <DrawerContent>
             <DrawerCloseButton />
-            <DrawerHeader>Menu</DrawerHeader>
+            <DrawerHeader>{isAuthenticated ? userInfo : "Hello"}</DrawerHeader>
 
             <DrawerBody>
-            <Flex onClick={onClose}  mt='2rem' h='5em' flexDir='column' align='center' justify='space-between' >
-                {links}
+              <Flex
+                mt="2rem"
+                h="15rem"
+                flexDir="column"
+                align="center"
+                justify="space-between"
+                onClick={onClose}
+              >
+                {home}
+                {!isAuthenticated ? links : <Button w='6rem' >< Logout /></Button>}
                 {langButton}
-            </Flex>
-            
-              
-              
-              </DrawerBody>
+              </Flex>
+            </DrawerBody>
           </DrawerContent>
         </DrawerOverlay>
       </Drawer>

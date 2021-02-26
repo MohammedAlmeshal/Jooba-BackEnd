@@ -53,7 +53,7 @@ const ProfileElemnts = ({ isOwner, askQuestion, user }) => {
 
   return (
     <div>
-      <Container h="120vh" maxW="70rem" centerContent pt="8rem">
+      <Container h="150vh" maxW="70rem" centerContent pt="8rem">
         <Flex
           p="1rem"
           align="center"
@@ -68,10 +68,10 @@ const ProfileElemnts = ({ isOwner, askQuestion, user }) => {
           />
 
           <Box ms="1rem">
-            <Heading as="h2" fontSize={["xl", "md", "lg", "xl"]} d="inline">
+            <Heading as="h2" fontSize={["xl", "lg", "4xl"]} d="inline">
               {user.name}
             </Heading>
-            <Text> {`@${user.username}`}</Text>
+            <Text fontSize={["lg", "lg", "xl"]}> {`@${user.username}`}</Text>
           </Box>
         </Flex>
 
@@ -94,19 +94,23 @@ const ProfileElemnts = ({ isOwner, askQuestion, user }) => {
 
         {!isOwner ? (
           <Flex position="fixed" top="93vh" w="20rem">
-            <InputGroup
-              boxShadow="xl"
-              bg={colorMode === "dark" ? "gray.800" : "white"}
-            >
-              <Input onChange={(e) => setQuestion(e.target.value)} />
-              <InputRightAddon
-                p="0"
-                children={
-                  <Button onClick={() => askQuestion(question, user.username)}>
-                    Ask
-                  </Button>
+            <InputGroup bg={colorMode === "dark" ? "gray.800" : "white"}>
+              <Input
+                boxShadow="lg"
+                focusBorderColor={
+                  colorMode === "dark" ? "brand.300" : "brand.100"
                 }
+                onChange={(e) => setQuestion(e.target.value)}
               />
+              <Box  ms="0.5rem" boxShadow="lg" backgroundColor='transparent' >
+                <Button
+                boxShadow="sm"
+                  size="md"
+                  onClick={() => askQuestion(question, user.username)}
+                >
+                  Ask
+                </Button>
+              </Box>
             </InputGroup>
           </Flex>
         ) : null}

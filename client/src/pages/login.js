@@ -3,6 +3,9 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { login } from "../flux/actions/authActions";
 import { clearErrors } from "../flux/actions/errorActions";
+import LogoLight from "../public/logo.svg";
+import LogoDark from "../public/logoDark.svg";
+
 import {
   Flex,
   Box,
@@ -17,8 +20,9 @@ import {
   AlertIcon,
   AlertTitle,
   AlertDescription,
+  useColorMode,
 } from "@chakra-ui/react";
-import { Formik, Form, Field, ErrorMessage,  } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 const Login = ({
   login,
   clearErrors,
@@ -28,14 +32,24 @@ const Login = ({
   RegisterError,
 }) => {
   let history = useHistory();
+  const { colorMode, toggleColorMode } = useColorMode();
+  const color = colorMode === "light" ? "brand.600" : "brand.300";
+  const Logo = colorMode === "light" ? LogoLight: LogoDark;
 
- 
+
   useEffect(() => {
+    if(RegisterError.msg.msg){
+    clearErrors();
+
+    }
     if (isAuthenticated) {
-      clearErrors();
+    clearErrors();
+
       history.push(`/${toUsername}`);
     }
   }, [isAuthenticated]);
+
+
 
   const validateUsername = (value) => {
     let error;
@@ -53,7 +67,7 @@ const Login = ({
     return error;
   };
   const alert = (
-    <Alert status="error">
+    <Alert status="error" mb="1rem" borderRadius="base">
       <AlertIcon />
       <AlertTitle mr={2}>{RegisterError.msg.msg}</AlertTitle>
     </Alert>
@@ -61,9 +75,9 @@ const Login = ({
   return (
     <>
       <Center>
-        <Flex flexDir="column" m="5rem">
-          <Heading size="2xl">Login</Heading>
-          <Box m="2rem">
+        <Flex flexDir="column" m="10rem 0 0 0" align="center">
+          <img src={Logo} width="250" />
+          <Box m="2rem" w="20rem">
             <Formik
               initialValues={{
                 username: "",
@@ -78,11 +92,13 @@ const Login = ({
                 <Form>
                   {RegisterError.status !== null && RegisterError.status != 401
                     ? alert
-                    : null}
+                    : <Box h='48px' />}
 
                   <Field name="username" validate={validateUsername}>
                     {({ field, form }) => (
                       <FormControl
+                        mb="1rem"
+                    
                         isInvalid={
                           form.errors.username && form.touched.username
                         }
@@ -90,6 +106,9 @@ const Login = ({
                         <Input
                           {...field}
                           id="username"
+                          variant="flushed"
+                          focusBorderColor={color}
+                         
                           placeholder="Username or Email"
                         />
                         <FormErrorMessage>
@@ -110,6 +129,8 @@ const Login = ({
                           {...field}
                           id="password"
                           type="password"
+                          variant="flushed"
+                          focusBorderColor={color}
                           placeholder="Password"
                         />
                         <FormErrorMessage>
@@ -120,10 +141,11 @@ const Login = ({
                   </Field>
 
                   <Button
-                    mt={4}
-                    colorScheme="teal"
+                    mt="2rem"
+                    w="20rem"
                     isLoading={isLoading}
                     type="submit"
+                    _hover={{bg:color,color:'white'}}
                   >
                     Login
                   </Button>
@@ -140,7 +162,7 @@ const Login = ({
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
   isAuthenticated: state.auth.isAuthenticated,
-  toUsername:state.auth.user.username,
+  toUsername: state.auth.user.username,
   RegisterError: state.error,
 });
 

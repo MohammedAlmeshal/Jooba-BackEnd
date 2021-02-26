@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   useColorMode,
   Button,
@@ -9,21 +9,35 @@ import {
   Center,
   Text,
   useMediaQuery,
+  Avatar,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
 } from "@chakra-ui/react";
-import { MoonIcon } from "@chakra-ui/icons";
-import { SunIcon } from "@chakra-ui/icons";
+import {
+  MoonIcon,
+  SunIcon,
+  ChevronDownIcon,
+  ArrowBackIcon,
+} from "@chakra-ui/icons";
 
 import Navbar from "./Navbar";
 import Logout from "./Logout";
-import Logo from "../public/logo.svg";
+import LogoLight from "../public/logo.svg";
+import LogoDark from "../public/logoDark.svg";
 import Sidebar from "./Sidebar";
 
 const Nav = ({ isAuthenticated, isLoading, username }) => {
+  const location = useLocation();
+
   const { colorMode, toggleColorMode } = useColorMode();
   const [lang, setLang] = useState("AR");
   const [isMobile] = useMediaQuery("(max-width: 767px)");
 
-  const color = colorMode === "light" ? "brand.100" : "brand.200";
+  const color = colorMode === "light" ? "brand.600" : "brand.300";
+  const BgColor = colorMode === "light" ? "white" : "gray.800";
+  const Logo = colorMode === "light" ? LogoLight: LogoDark;
 
   const toggleLang = () => {
     if (document.documentElement.lang === "ar") {
@@ -37,34 +51,86 @@ const Nav = ({ isAuthenticated, isLoading, username }) => {
     }
   };
 
+  const home = (
+    <Link to="/">
+      <Button
+        bg="transparent"
+        _hover={{ background: `${color}`, color: "white" }}
+        _active={{ background: `${color}`, color: "white" }}
+        isActive={location.pathname === "/" ? true : false}
+        w="6rem"
+      >
+        Home
+      </Button>
+    </Link>
+  );
+  const userInfo = (
+    <Flex align="center">
+      {" "}
+      <Avatar size="xs" me="0.5rem" />
+      <Text fontSize="md"> {username}</Text>
+    </Flex>
+  );
   const links =
     !isLoading && isLoading !== null ? (
       isAuthenticated ? (
         <>
           {" "}
-          <Link to="/">
-            {" "}
-            <Logout />
-          </Link>{" "}
-          <p>{username}</p>{" "}
+          <Menu>
+            <MenuButton
+              matchWidth={true}
+              as={Button}
+              rightIcon={<ChevronDownIcon />}
+            >
+              {userInfo}
+            </MenuButton>
+            <MenuList>
+              <MenuItem>
+                <Logout />
+              </MenuItem>
+            </MenuList>
+          </Menu>
         </>
       ) : (
         <>
           {" "}
-          <Link to="/login">Login</Link> <Link to="/signup">Sign up</Link>{" "}
+          <Link to="/login">
+            <Button
+              m="0 1rem"
+              w="6rem"
+              bg="transparent"
+              _hover={{ background: `${color}`, color: "white" }}
+              _active={{ background: `${color}`, color: "white" }}
+              isActive={location.pathname === "/login" ? true : false}
+            >
+              {" "}
+              Login
+            </Button>
+          </Link>{" "}
+          <Link to="/signup">
+            <Button
+              bg="transparent"
+              _hover={{ background: `${color}`, color: "white" }}
+              _active={{ background: `${color}`, color: "white" }}
+              w="6rem"
+              isActive={location.pathname === "/signup" ? true : false}
+            >
+              Sign up
+            </Button>
+          </Link>{" "}
         </>
       )
     ) : null;
 
   const darkModeButton = (
-    <Button me="1rem" bg="transparent" _focus="none" onClick={toggleColorMode}>
+    <Button      _hover={{ bg: color, color: "white" }} me="1rem" bg="transparent" _focus="none" onClick={toggleColorMode}>
       {" "}
       {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
     </Button>
   );
 
   const langButton = (
-    <Button onClick={() => toggleLang()}>
+    <Button      _hover={{ bg: color, color: "white" }} bg="transparent" onClick={() => toggleLang()}>
       {document.documentElement.lang === "ar" ? (
         <Text>{lang}</Text>
       ) : (
@@ -90,11 +156,20 @@ const Nav = ({ isAuthenticated, isLoading, username }) => {
           {isMobile ? (
             <Flex align="center">
               {darkModeButton}
-              <Sidebar links={links} langButton={langButton} color={color} />
+
+              <Sidebar
+                links={links}
+                home={home}
+                langButton={langButton}
+                color={color}
+                isAuthenticated={isAuthenticated}
+                userInfo={userInfo}
+              />
             </Flex>
           ) : (
             <Navbar
               links={links}
+              home={home}
               darkModeButton={darkModeButton}
               langButton={langButton}
             />
