@@ -1,6 +1,4 @@
 {
-    "mongoURI": "mongoURI",
-    "jwtSecret": "jwtSecret"
-
-  }
-    
+  "mongoURI": "mongoURI",
+  "jwtSecret": "jwtSecret"
+}
