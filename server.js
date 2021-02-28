@@ -8,7 +8,12 @@ const posts = require("./routes/api/posts");
 const users = require("./routes/api/users");
 const auth = require("./routes/api/auth");
 
+var cors = require('cors')
+
+
 const app = express();
+app.use(cors())
+
 
 // bodyParser middleware "now built in"
 app.use(express.json());
