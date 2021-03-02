@@ -37,14 +37,15 @@ router.post("/", (req, res) => {
         // create first question
         const newPost = new Post({
           question: {
-            questionTxt: 'This is your first question! you can choose to reply or to ignore...',
+            questionTxt:
+              "This is your first question! you can choose to reply or to ignore...",
           },
           questionTo: newUser,
         });
-  
+
         newPost.save().then((post) => {
           newUser.posts.push(post);
-      
+
           newUser.save().then((user) => {
             // create token and expire in 1 hour
             jwt.sign(
@@ -67,14 +68,7 @@ router.post("/", (req, res) => {
               }
             );
           });
-
-
-
         });
-
-
-
-       
       });
     });
   });
