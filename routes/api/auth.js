@@ -15,7 +15,7 @@ router.post("/", (req, res) => {
 
   //simple validation
   if ( !username  || !password) {
-    return res.status(400).json({ msg: "missing username or password" });
+    return res.status(400).json({ msg: "Missing username or password" });
   }
   // check if user exist by username or email
   User.findOne({ $or: [{ email:username }, { username }] }).then((user) => {

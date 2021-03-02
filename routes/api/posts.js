@@ -14,7 +14,7 @@ const User = require("../../models/User");
 router.post("/:username", (req, res) => {
   //check for white space
   if (!req.body.question.replace(/\s/g, '').length) {
-    return res.status(400).json({ msg: 'question only contains whitespace ' })
+    return res.status(400).json({ msg: 'Question only contains whitespace ' })
   }
   User.findOne({ username: req.params.username })
     .then((user) => {
