@@ -1,4 +1,4 @@
-<a href="https://aimeos.org/">
+<a href="https://jooba.vercel.app/">
     <img src="https://github.com/MohammedAlmeshal/Jooba-FrontEnd/blob/main/src/public/logo.svg" alt="Jooba logo" title="Jooba" align="right" height="250" />
 </a>
 
