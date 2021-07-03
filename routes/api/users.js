@@ -48,24 +48,13 @@ router.post("/", (req, res) => {
 
           newUser.save().then((user) => {
             // create token and expire in 1 hour
-            jwt.sign(
+           const token = jwt.sign(
               {
                 id: user.id,
               },
               config.get("jwtSecret"),
               { expiresIn: 3600 },
-              (err, token) => {
-                if (err) throw err;
-                res.json({
-                  token: token,
-                  user: {
-                    id: user.id,
-                    name: user.name,
-                    username: user.username,
-                    email: user.email,
-                  },
-                });
-              }
+    
             );
           });
         });
