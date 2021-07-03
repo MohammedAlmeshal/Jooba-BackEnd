@@ -2,25 +2,22 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 const config = require("config");
-
+const { handleError, ErrorHandler } = require("./utils/errorHandler");
 const profiles = require("./routes/api/profiles");
 const posts = require("./routes/api/posts");
 const users = require("./routes/api/users");
 const auth = require("./routes/api/auth");
 
-var cors = require('cors')
-
+var cors = require("cors");
 
 const app = express();
-app.use(cors())
-
+app.use(cors());
 
 // bodyParser middleware "now built in"
 app.use(express.json());
 // DB config
 const db = config.get("mongoURI");
-
-// Connect to mongo db 
+// Connect to mongo db
 mongoose.set("useUnifiedTopology", true);
 mongoose.set("useFindAndModify", false);
 mongoose
@@ -34,6 +31,10 @@ app.use("/api/posts", posts);
 app.use("/api/users", users);
 app.use("/api/auth", auth);
 
+// error handler middleware
+app.use((err, req, res, next) => {
+  handleError(err, res);
+});
 // server static assests in production
 if (process.env.NODE_ENV === "production") {
   // Set static folder
