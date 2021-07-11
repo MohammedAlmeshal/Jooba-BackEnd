@@ -12,11 +12,11 @@ var cors = require("cors");
 
 const app = express();
 app.use(cors());
-
-// bodyParser middleware "now built in"
 app.use(express.json());
+require("dotenv").config();
+
 // DB config
-const db = config.get("mongoURI");
+const db = process.env.MONGO_URI;
 // Connect to mongo db
 mongoose.set("useUnifiedTopology", true);
 mongoose.set("useFindAndModify", false);

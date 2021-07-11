@@ -24,16 +24,15 @@ const login = async ({ username, password }) => {
       {
         id: user.id,
       },
-      config.get("jwtSecret"),
+      process.env.JWT,
       { expiresIn: 3600 }
     );
     return {
       token,
-      user:{
-              id: user.id,
-      username: user.username,
-      }
-
+      user: {
+        id: user.id,
+        username: user.username,
+      },
     };
   }
 };

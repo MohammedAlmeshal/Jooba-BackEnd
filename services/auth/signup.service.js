@@ -36,7 +36,7 @@ const signup = async ({ name, username, email, password }) => {
     {
       id: userCreated.id,
     },
-    config.get("jwtSecret"),
+    process.env.JWT,
     { expiresIn: 3600 }
   );
 
