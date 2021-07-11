@@ -1,7 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
-const config = require("config");
 const { handleError, ErrorHandler } = require("./utils/errorHandler");
 const profiles = require("./routes/api/profiles");
 const posts = require("./routes/api/posts");
