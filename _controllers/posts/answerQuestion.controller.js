@@ -1,7 +1,7 @@
 const express = require("express");
 const User = require("../../models/User");
 
-const services = require("../../services/posts");
+const services = require("../../_services/posts");
 const { ErrorHandler } = require("../../utils/errorHandler");
 
 const answerQuestion = async (req, res, next) => {

@@ -2,10 +2,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const path = require("path");
 const { handleError, ErrorHandler } = require("./utils/errorHandler");
-const profiles = require("./routes/api/profiles");
-const posts = require("./routes/api/posts");
-const users = require("./routes/api/users");
-const auth = require("./routes/api/auth");
+const profiles = require("./_routes/api/profiles");
+const posts = require("./_routes/api/posts");
+const auth = require("./_routes/api/auth");
 
 var cors = require("cors");
 
@@ -27,7 +26,6 @@ mongoose
 // Use routes
 app.use("/api/profiles", profiles);
 app.use("/api/posts", posts);
-app.use("/api/users", users);
 app.use("/api/auth", auth);
 
 // error handler middleware

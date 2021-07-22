@@ -1,9 +1,8 @@
-const services = require("../../services/auth");
+const services = require("../../_services/auth");
 const { ErrorHandler } = require("../../utils/errorHandler");
 
 const signup = async (req, res, next) => {
   try {
-  
     const { name, username, email, password } = req.body;
     if (!name || !username || !email || !password) {
       throw new ErrorHandler(404, "Missing required fields");

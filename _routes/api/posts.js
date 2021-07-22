@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../../middleware/auth");
 const isPostOwner = require("../../middleware/isOwner");
-const posts = require("../../controllers/posts");
+const posts = require("../../_controllers/posts");
 
 // @route POST api/posts
 // @desc Create a post "Ask a question"

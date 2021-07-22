@@ -1,4 +1,4 @@
-const services = require("../../services/auth");
+const services = require("../../_services/auth");
 const { ErrorHandler } = require("../../utils/errorHandler");
 
 const getUser = async (req, res, next) => {

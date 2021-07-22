@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const authenticate = require("../../middleware/auth");
-const auth = require("../../controllers/auth");
+const auth = require("../../_controllers/auth");
 
 // @route POST api/auth
 // @desc Auth user (login)

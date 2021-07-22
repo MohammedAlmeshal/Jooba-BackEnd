@@ -6,7 +6,8 @@ const { ErrorHandler } = require("../../utils/errorHandler");
 const signup = async ({ name, username, email, password }) => {
   // check if user exist
   const user = await User.findOne({ $or: [{ email }, { username }] });
-  if (user) throw new ErrorHandler(404, "User exists");
+  console.log("iserrrr", user);
+  if (user) throw new ErrorHandler(404, "User already exists");
 
   const newUser = new User({
     name,

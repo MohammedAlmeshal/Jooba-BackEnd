@@ -1,21 +1,20 @@
 const express = require("express");
 const User = require("../../models/User");
 
-const services = require("../../services/profiles");
+const services = require("../../_services/profiles");
 const { ErrorHandler } = require("../../utils/errorHandler");
 
-const getOwnProfile = async (req, res, next) => {
+const getProfile = async (req, res, next) => {
   try {
-    const { user } = req;
-    if (!user.id) {
+    const { username } = req.params;
+    if (!username) {
       throw new ErrorHandler(404, "Missing values");
     }
-    const profile = await services.getOwnProfile(user.id);
+    const profile = await services.getProfile(username);
     res.json(profile);
   } catch (error) {
     console.error(error);
     next(error);
   }
 };
-
-module.exports = getOwnProfile;
+module.exports = getProfile;

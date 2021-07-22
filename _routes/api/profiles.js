@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const authenticate = require("../../middleware/auth");
 
-const profiles = require("../../controllers/profiles");
+const profiles = require("../../_controllers/profiles");
 
 // @route GET /
 // @desc Get user own profile
