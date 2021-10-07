@@ -8,6 +8,9 @@ const auth = require("../../_controllers/auth");
 // @access Public
 router.post("/", auth.login);
 
+// @route POST api/auth
+// @desc Auth user (signup)
+// @access Public
 router.post("/signup", auth.signup);
 
 // @route GET api/auth/user
